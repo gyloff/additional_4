@@ -2,45 +2,37 @@ module.exports = function multiply(first, second) {
     var arrayFirst = [];
     var arraySecond = [];
     var array = [];
+    var arraySum = [];
     var rememberAboutMe = 0;
     var OmegaLUL = 0;
     var shift = 0;
+    var d;
 
-    arrayFirst = first.split('');
-    arraySecond = second.split('');
-  
-    for (var i = 0; i < first.length; i++){
-        var array = [];      
-        for (var j = second.length - 1; j >= 0; j--){
-            array.push((arrayFirst[i] * arraySecond[j] + rememberAboutMe) % 10);
-            rememberAboutMe = Math.floor((arrayFirst[i] * arraySecond[j] + rememberAboutMe) / 10);
-        }
-        if (rememberAboutMe > 0){
-            array.push(rememberAboutMe);
-            rememberAboutMe = 0;
-        }
-        array.reverse();
-        for (var e = 0; e < first.length - i - 1; e++){
-            array.push(0);
-        }
-        if (i == 0){
-            arraySum = array;
-        } else {
-            for (var b = 0; b < array.length; b++){
-                arraySum[b + shift] = arraySum[b + shift] + array[b];
-            }
-        }
-        shift++;
-        for (var c = arraySum.length - 1; c >= 0; c--){
-            if (arraySum[c] > 9){
-                arraySum[c] = arraySum[c] - 10;
-                arraySum[c - 1] = arraySum[c - 1] + 1;
-            }
-        }
+    if (Math.max(first.length, second.length) == first.length){
+        arrayFirst = first.split('');
+        arraySecond = second.split('');
+    }else{
+        arrayFirst = second.split('');
+        arraySecond = first.split('');    
     }
-    for (var d = 0; d < arraySum.length; d++){
-        OmegaLUL = OmegaLUL + arraySum[d] + '';
+    array.length = arrayFirst.length;
+    array.fill(0);
+    
+    for (var i = arraySecond.length - 1, g = -1; i >= 0; i--){
+        g++;
+        d = g;    
+        for (var j = arrayFirst.length - 1; j >= 0; j--){
+            array[d] += Number(arrayFirst[j]) * Number(arraySecond[i]);
+            d++;
+        }  
+        if (i != 0) array.push(0);
     }
-    return OmegaLUL;
+    for (var k = 0; k < array.length; k++){
+       if (k == array.length - 1 && array[k] > 9) array.push(0);
+        array[k] += rememberAboutMe;
+        rememberAboutMe = Math.floor(array[k] / 10);
+        array[k] = array[k] % 10;
+    }
+
+    return array.reverse().join('');
 }
-  
